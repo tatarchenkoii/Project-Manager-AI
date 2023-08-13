@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  # Database
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    volumes:
+      - project_manager_db:/var/lib/mysql
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Ilya_2003.
+      MYSQL_DATABASE: project_manager_db
+      MYSQL_PASSWORD: Ilya_2003.
+    networks:
+      - mysql-phpmyadmin
+
+  # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - db  # Correct the dependency name here
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8091:80"
+    environment:
+      PMA_HOST: db  # Use the correct service name for the host
+      MYSQL_ROOT_PASSWORD: Ilya_2003.
+    networks:
+      - mysql-phpmyadmin
+
+networks:
+  mysql-phpmyadmin:
+
+volumes:
+  project_manager_db:
