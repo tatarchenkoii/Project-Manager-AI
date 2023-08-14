@@ -1,8 +1,15 @@
 import db from './models/index.model.js';
 import express from 'express';
+import projectsRoute from "./routes/projects.route.js";
 
 const PORT = process.env.PORT || 3010;
 const app = express();
+app.use(express.json());
+
+/**
+ * Routes registration
+ */
+projectsRoute(app);
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,6 +18,12 @@ app.use((req, res, next) => {
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
+});
+
+app.get("/", (req, res) => {
+    res.json({
+        message: "Server is working"
+    });
 });
 
 db.sequelize.sync()
